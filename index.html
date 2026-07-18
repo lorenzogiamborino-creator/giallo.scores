@@ -1,5 +1,5 @@
 <!-- Giallo Scores Widget - Versión Pro Elite por Lorenzo Giamborino -->
-<div id="giallo-widget-root" style="background-color: #000000; color: #ffffff; border-radius: 0px; overflow: hidden; max-width: 480px; margin: 0 auto; font-family: 'Archivo', sans-serif; min-height: 100vh;">
+<div id="giallo-widget-root" style="background-color: #000000; color: #ffffff; border-radius: 0px; overflow: hidden; max-width: 480px; margin: 0 auto; font-family: 'Archivo', sans-serif; min-height: 1[...]
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&display=swap');
@@ -66,7 +66,7 @@
 
     <!-- Buscador -->
     <div id="search-box" style="display: none; padding: 0 24px 20px 24px; background: #000;">
-        <input type="text" id="team-search-input" style="width:100%; background:#0a0a0a; border:1px solid #111; border-radius:14px; padding:14px; color:white; outline:none; font-size: 12px;" placeholder="Buscar club...">
+        <input type="text" id="team-search-input" style="width:100%; background:#0a0a0a; border:1px solid #111; border-radius:14px; padding:14px; color:white; outline:none; font-size: 12px;" placeholder="Busca un equipo...">
         <div id="search-results" style="max-height: 300px; overflow-y: auto;" class="scroll-area"></div>
     </div>
 
@@ -91,7 +91,7 @@
 
 <script>
     (function() {
-        const KEY = "3af7c318c595188d2f4fbd7b9071c1c4";
+        const KEY = "3baea1631eade87185fc0ab76b70a8e9";
         const URL = "https://v3.football.api-sports.io";
         let userFavs = JSON.parse(localStorage.getItem('giallo_user_favs')) || [];
         let searchTimeout;
@@ -166,10 +166,10 @@
 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
                     <div>
-                        ${homeEvents.map(e => `<div style="display:flex; justify-content:flex-end; gap:8px; font-size:10px; margin-bottom:10px; text-align:right;"><span>${e.player.name}<br><small style="color:#444">${e.detail}</small></span><b style="color:#3b82f6;">${e.time.elapsed}'</b></div>`).join('')}
+                        ${homeEvents.map(e => `<div style="display:flex; justify-content:flex-end; gap:8px; font-size:10px; margin-bottom:10px; text-align:right;"><span>${e.player.name}<br><small style="color:#3b82f6;">${e.type.toUpperCase()}</small></span><b>${e.time.elapsed}'</b></div>`).join('')}
                     </div>
                     <div>
-                        ${awayEvents.map(e => `<div style="display:flex; gap:8px; font-size:10px; margin-bottom:10px;"><b style="color:#3b82f6;">${e.time.elapsed}'</b><span>${e.player.name}<br><small style="color:#444">${e.detail}</small></span></div>`).join('')}
+                        ${awayEvents.map(e => `<div style="display:flex; gap:8px; font-size:10px; margin-bottom:10px;"><b style="color:#3b82f6;">${e.time.elapsed}'</b><span>${e.player.name}<br><small style="color:#3b82f6;">${e.type.toUpperCase()}</small></span></div>`).join('')}
                     </div>
                 </div>
             `;
@@ -266,8 +266,8 @@
                     const t = item.team;
                     const div = document.createElement('div');
                     div.style = "display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #111; align-items:center;";
-                    div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.logo}" style="width:20px;"> <span style="font-size:11px; font-weight:900;">${t.name}</span></div> 
-                                     <button onclick="toggleFixTeam(${t.id}, '${t.name}', '${t.logo}')" style="background:#111; color:#3b82f6; border:none; border-radius:8px; padding:5px 10px; font-size:10px;">★</button>`;
+                    div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.logo}" style="width:20px;"> <span style="font-size:11px; font-weight:900;">${t.name}</span></div>
+                                     <button onclick="toggleFixTeam(${t.id}, '${t.name}', '${t.logo}')" style="background:#111; color:#3b82f6; border:none; border-radius:8px; padding:5px 10px; font-size:10px; font-weight:900; cursor:pointer;">+ FAV</button>`;
                     res.appendChild(div);
                 });
             }, 500);
@@ -304,4 +304,3 @@
         start();
     })();
 </script>
-
