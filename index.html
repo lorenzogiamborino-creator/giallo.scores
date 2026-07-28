@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Giallo Indumentaria - Colección oficial de diseños deportivos desde Mataderos, Buenos Aires. Kits técnicos, estandartes y proyectos exclusivos.">
-    <meta name="keywords" content="indumentaria, deportiva, diseño, Mataderos, Buenos Aires, Giallo">
-    <meta name="author" content="Giallo Indumentaria">
-    <meta property="og:title" content="Giallo Indumentaria - Colección Oficial">
-    <meta property="og:description" content="Diseños exclusivos para quienes buscan la excelencia técnica dentro y fuera de la cancha.">
-    <meta property="og:type" content="website">
-    <title>Giallo Indumentaria - Colección Oficial</title>
+    <meta name="description" content="Giallo Indumentaria - Tienda oficial de indumentaria deportiva desde Mataderos, Buenos Aires.">
+    <title>Giallo Indumentaria - Tienda Completa</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -63,6 +59,56 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: rgba(3, 3, 3, 0.95);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .star {
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .star:hover {
+            transform: scale(1.2);
+        }
     </style>
 </head>
 <body class="light-rays-bg min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
@@ -70,34 +116,54 @@
     <!-- Navegación -->
     <header class="sticky top-0 z-50 backdrop-blur-md bg-[#030303]/80 border-b border-white/10 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <button onclick="switchPage('home')" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition" aria-label="Ir a inicio">
+            <button onclick="switchPage('home')" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition">
                 <div class="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-lg">
                     G
                 </div>
                 <div>
                     <span class="font-extrabold tracking-wider text-lg text-white">GIALLO</span>
-                    <span class="block text-[10px] text-cyan-400 tracking-widest uppercase">Mataderos 2025</span>
+                    <span class="block text-[10px] text-cyan-400 tracking-widest uppercase">Indumentaria 2025</span>
                 </div>
             </button>
 
             <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
-                <button onclick="switchPage('home')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="home" aria-label="Ir a Home">Home</button>
-                <button onclick="switchPage('collections')" class="hover:text-cyan-400 transition-colors text-cyan-400 nav-btn" data-target="collections" aria-label="Ver Colecciones">Collections</button>
-                <button onclick="switchPage('philosophy')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="philosophy" aria-label="Leer nuestra Filosofía">Philosophy</button>
+                <button onclick="switchPage('home')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="home">Home</button>
+                <button onclick="switchPage('shop')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="shop">Tienda</button>
+                <button onclick="switchPage('editor')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="editor">Diseña</button>
+                <button onclick="switchPage('pedidos')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="pedidos">Pedidos</button>
+                <button onclick="switchPage('contact')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="contact">Contacto</button>
             </nav>
 
             <div class="flex items-center gap-4">
-                <a href="https://www.instagram.com/gialloindumentaria/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full bg-cyan-500 text-black hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20" aria-label="Seguinos en Instagram">
-                    Instagram
+                <button onclick="switchPage('cart')" class="relative px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full bg-white/5 hover:bg-white/10 transition">
+                    🛒 Carrito
+                    <span class="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" id="cartCount" style="display:none;">0</span>
+                </button>
+                <button onclick="toggleUserMenu()" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full bg-cyan-500/20 hover:bg-cyan-500/40 transition border border-cyan-500/30">
+                    👤 Cuenta
+                </button>
+                <a href="https://www.instagram.com/gialloindumentaria/?igsh=M3llZjc5bm41NmFt" target="_blank" rel="noopener noreferrer" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full bg-cyan-500 text-black hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/20">
+                    📸 IG
                 </a>
+            </div>
+        </div>
+
+        <!-- User Menu Dropdown -->
+        <div id="userMenu" class="hidden absolute top-16 right-6 glass-card rounded-xl p-4 space-y-2 w-48">
+            <button onclick="openLoginModal()" class="w-full px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition text-sm">Iniciar Sesión</button>
+            <button onclick="openRegisterModal()" class="w-full px-4 py-2 rounded-lg bg-white/5 text-white font-semibold hover:bg-white/10 transition text-sm">Registrarse</button>
+            <button id="logoutBtn" onclick="logout()" class="w-full px-4 py-2 rounded-lg bg-red-600/20 text-red-400 font-semibold hover:bg-red-600/40 transition text-sm hidden">Cerrar Sesión</button>
+            <div id="userInfo" class="text-sm text-gray-400 border-t border-white/10 pt-2 hidden">
+                <p>Usuario: <span id="userName"></span></p>
+                <p>Email: <span id="userEmail"></span></p>
             </div>
         </div>
     </header>
 
-    <!-- Contenido Principal -->
+    <!-- Main Content -->
     <main class="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
 
-        <!-- VISTA HOME -->
+        <!-- HOME -->
         <section id="page-home" class="space-y-16 fade-in">
             <div class="text-center space-y-6 max-w-3xl mx-auto py-12">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
@@ -107,228 +173,595 @@
                     Indumentaria de Alta Gama <span class="text-cyan-400 text-glow">Desde Mataderos</span>
                 </h1>
                 <p class="text-gray-400 text-base md:text-lg">
-                    Diseños exclusivos para quienes buscan la excelencia técnica dentro y fuera de la cancha.
+                    Diseños exclusivos para quienes buscan la excelencia técnica. Kits de partido, indumentaria técnica y accesorios premium.
                 </p>
                 <div class="flex flex-wrap justify-center gap-4 pt-4">
-                    <button onclick="switchPage('collections')" class="px-8 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/25" aria-label="Ver colección completa">
+                    <button onclick="switchPage('shop')" class="px-8 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/25">
                         Ver Colección
                     </button>
-                    <button onclick="switchPage('philosophy')" class="px-8 py-3 rounded-xl glass-card text-white font-semibold hover:border-cyan-400/50 transition" aria-label="Leer nuestra filosofía">
-                        Nuestra Filosofía
+                    <button onclick="switchPage('editor')" class="px-8 py-3 rounded-xl glass-card text-white font-semibold hover:border-cyan-400/50 transition">
+                        Diseña Tu Kit
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- VISTA COLLECTIONS -->
-        <section id="page-collections" class="space-y-8 hidden fade-in">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-white/10 pb-6">
+        <!-- SHOP -->
+        <section id="page-shop" class="space-y-8 hidden fade-in">
+            <div class="flex justify-between items-center border-b border-white/10 pb-6">
                 <div>
-                    <h1 class="text-3xl font-extrabold tracking-tight">Colección Oficial & Diseños</h1>
-                    <p class="text-sm text-gray-400">Kits de partido, indumentaria técnica, estandartes y proyectos exclusivos.</p>
+                    <h1 class="text-3xl font-extrabold tracking-tight">Tienda</h1>
+                    <p class="text-sm text-gray-400">Encuentra todo lo que necesitas</p>
                 </div>
-                <div class="flex gap-2 flex-wrap">
-                    <button onclick="filterCategory('all')" class="filter-btn px-3 py-1.5 rounded-lg bg-cyan-500 text-black text-xs font-bold transition" data-filter="all" aria-pressed="true">Todos</button>
-                    <button onclick="filterCategory('kits')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-semibold transition" data-filter="kits" aria-pressed="false">Kits</button>
-                    <button onclick="filterCategory('banners')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-semibold transition" data-filter="banners" aria-pressed="false">Estandartes</button>
+                <div class="flex gap-2">
+                    <input type="text" id="searchInput" placeholder="Buscar..." class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-600" onkeyup="filterProducts()">
+                    <select id="sortSelect" class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white" onchange="filterProducts()">
+                        <option value="default">Ordenar por</option>
+                        <option value="price-asc">Precio: Menor a Mayor</option>
+                        <option value="price-desc">Precio: Mayor a Menor</option>
+                        <option value="name">Nombre A-Z</option>
+                    </select>
                 </div>
             </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- Item 1: Kit Principal -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">MATCH KIT</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Kit Deportivo Oficial</span>
-                            <div class="text-cyan-400 font-bold text-sm">Giallo Pro Edición N°11</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Camiseta Titular Giallo</h3>
-                        <p class="text-xs text-gray-400">Diseño aerodinámico, costuras reforzadas y tecnología de alto rendimiento.</p>
-                    </div>
-                </div>
-
-                <!-- Item 2: Kit Alternativo -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">ALTERNATIVA</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Kit Visitante</span>
-                            <div class="text-cyan-400 font-bold text-sm">Edición Táctica Oscura</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Camiseta Suplente Giallo</h3>
-                        <p class="text-xs text-gray-400">Inspirada en la elegancia nocturna y la precisión táctica en cancha de 11.</p>
-                    </div>
-                </div>
-
-                <!-- Item 3: Mockup de Diseño -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">PROTOTIPO</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Plano de Confección</span>
-                            <div class="text-cyan-400 font-bold text-sm">Patrón N° 11</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Mockup Técnico de Camiseta</h3>
-                        <p class="text-xs text-gray-400">Estructura de diseño y detalles de patronaje exclusivos de la marca.</p>
-                    </div>
-                </div>
-
-                <!-- Item 4: Estandarte / Bandera -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-banners hidden">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-blue-950/40 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full font-bold">BANDERA OFICIAL</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Argentino de Mataderos</span>
-                            <div class="text-blue-400 font-bold text-sm">"Siempre te voy a seguir"</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Estandarte Institucional</h3>
-                        <p class="text-xs text-gray-400">Gráfica de tribuna y símbolos tradicionales del club de baby y campo.</p>
-                    </div>
-                </div>
-
-                <!-- Item 5: Bandera / Lema -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-banners hidden">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-blue-950/40 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full font-bold">BANDERA OFICIAL</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Identidad de Barrio</span>
-                            <div class="text-blue-400 font-bold text-sm">"El que abandona no tiene premio"</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Bandera Tradicional</h3>
-                        <p class="text-xs text-gray-400">Diseño aplicado sobre fondo de ladrillos con los colores y la mística del club.</p>
-                    </div>
-                </div>
-
-                <!-- Item 6: Proceso Creativo -->
-                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
-                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
-                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">PROCESO</span>
-                        <div class="text-center p-4">
-                            <span class="text-xs text-gray-400 block mb-1">Estampado Textil</span>
-                            <div class="text-cyan-400 font-bold text-sm">Sellos Artesanales</div>
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-base">Técnica de Estampado Giallo</h3>
-                        <p class="text-xs text-gray-400">Detalle artesanal de los sellos de madera sobre soporte textil.</p>
-                    </div>
-                </div>
-
-            </div>
+            <div id="shopGrid" class="product-grid"></div>
         </section>
 
-        <!-- VISTA PHILOSOPHY -->
-        <section id="page-philosophy" class="space-y-12 max-w-4xl mx-auto hidden fade-in">
-            <div class="text-center space-y-4 py-8">
-                <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">Nuestra Esencia</span>
-                <h1 class="text-4xl font-extrabold tracking-tight">Nacidos en Mataderos, Pensados para la Gloria</h1>
-                <p class="text-gray-400 text-base">
-                    Giallo es la unión perfecta entre la pasión de barrio y la exigencia del deporte competitivo.
-                </p>
-            </div>
-
-            <div class="space-y-6 text-gray-300">
-                <div class="glass-card p-6 rounded-xl">
-                    <h2 class="text-xl font-bold text-cyan-400 mb-3">Nuestra Misión</h2>
-                    <p>Crear indumentaria deportiva que trascienda lo técnico y se convierta en símbolo de identidad, pasión y excelencia. Cada diseño cuenta la historia de Mataderos, del barrio, de la gente que vive y respira fútbol.</p>
-                </div>
-
-                <div class="glass-card p-6 rounded-xl">
-                    <h2 class="text-xl font-bold text-cyan-400 mb-3">Valores</h2>
-                    <ul class="space-y-2 list-disc list-inside">
-                        <li>Excelencia técnica en cada prenda</li>
-                        <li>Diseño innovador con raíces barrialeñas</li>
-                        <li>Compromiso con la comunidad deportiva</li>
-                        <li>Autenticidad en cada proyecto</li>
-                    </ul>
+        <!-- CARRITO -->
+        <section id="page-cart" class="space-y-8 hidden fade-in">
+            <h1 class="text-3xl font-extrabold tracking-tight">Tu Carrito</h1>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4" id="cartItems"></div>
+                <div class="glass-card p-6 rounded-xl h-fit space-y-4">
+                    <h2 class="font-bold text-lg">Resumen</h2>
+                    <div class="space-y-2 text-sm border-b border-white/10 pb-4">
+                        <div class="flex justify-between"><span>Subtotal:</span><span id="subtotal">$0</span></div>
+                        <div class="flex justify-between"><span>Cupón:</span><span id="discountAmount">-$0</span></div>
+                        <div class="flex justify-between"><span>Envío:</span><span id="shipping">$0</span></div>
+                    </div>
+                    <div class="flex justify-between font-bold text-lg"><span>Total:</span><span id="total">$0</span></div>
+                    <input type="text" id="couponInput" placeholder="Código de cupón" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                    <button onclick="applyCoupon()" class="w-full px-4 py-2 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition text-sm">Aplicar Cupón</button>
+                    <button onclick="checkout()" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Proceder al Pago</button>
+                    <button onclick="openWhatsApp()" class="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition">📱 WhatsApp</button>
                 </div>
             </div>
         </section>
 
+        <!-- EDITOR DE DISEÑOS -->
+        <section id="page-editor" class="space-y-8 hidden fade-in">
+            <h1 class="text-3xl font-extrabold tracking-tight">Editor de Diseños</h1>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="glass-card p-6 rounded-xl space-y-4">
+                        <div class="space-y-3">
+                            <div><label class="block text-sm font-semibold mb-2">Tipo de Prenda</label><select id="garmentType" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white"><option value="camiseta">Camiseta</option><option value="short">Short</option><option value="buzo">Buzo</option></select></div>
+                            <div><label class="block text-sm font-semibold mb-2">Color Principal</label><input type="color" id="mainColor" value="#00ffff" class="w-full h-10 rounded-lg cursor-pointer"></div>
+                            <div><label class="block text-sm font-semibold mb-2">Color Secundario</label><input type="color" id="secondaryColor" value="#030303" class="w-full h-10 rounded-lg cursor-pointer"></div>
+                            <div><label class="block text-sm font-semibold mb-2">Texto</label><input type="text" id="designText" placeholder="Ej: GIALLO" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-600"></div>
+                            <button onclick="updatePreview()" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Actualizar</button>
+                            <button onclick="saveDesign()" class="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition">💾 Guardar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-xl h-fit space-y-4">
+                    <h2 class="font-bold text-lg">Previsualizacion</h2>
+                    <div id="designPreview" class="w-full h-64 rounded-lg flex items-center justify-center font-bold text-lg" style="background-color: #00ffff; color: #030303;">GIALLO</div>
+                    <button onclick="addDesignToCart()" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEGUIMIENTO DE PEDIDOS -->
+        <section id="page-pedidos" class="space-y-8 hidden fade-in">
+            <h1 class="text-3xl font-extrabold tracking-tight mb-2">Mis Pedidos</h1>
+            <div id="ordersList" class="space-y-4">
+                <div class="glass-card p-6 text-center text-gray-400">Inicia sesión para ver tus pedidos</div>
+            </div>
+        </section>
+
+        <!-- CONTACTO -->
+        <section id="page-contact" class="space-y-8 hidden fade-in">
+            <div class="max-w-2xl mx-auto">
+                <h1 class="text-3xl font-extrabold tracking-tight mb-8">Contacto</h1>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="glass-card p-6 text-center rounded-xl space-y-2">
+                        <div class="text-2xl">📱</div>
+                        <h3 class="font-bold">WhatsApp</h3>
+                        <a href="https://wa.me/541123456789" target="_blank" class="text-cyan-400 hover:underline text-sm">+54 11 2345-6789</a>
+                    </div>
+                    <div class="glass-card p-6 text-center rounded-xl space-y-2">
+                        <div class="text-2xl">📸</div>
+                        <h3 class="font-bold">Instagram</h3>
+                        <a href="https://www.instagram.com/gialloindumentaria/?igsh=M3llZjc5bm41NmFt" target="_blank" class="text-cyan-400 hover:underline text-sm">@gialloindumentaria</a>
+                    </div>
+                    <div class="glass-card p-6 text-center rounded-xl space-y-2">
+                        <div class="text-2xl">📧</div>
+                        <h3 class="font-bold">Email</h3>
+                        <a href="mailto:info@giallo.com" class="text-cyan-400 hover:underline text-sm">info@giallo.com</a>
+                    </div>
+                </div>
+                <form id="contactForm" class="glass-card p-6 rounded-xl space-y-4">
+                    <input type="text" required placeholder="Nombre" class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                    <input type="email" required placeholder="Email" class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                    <textarea required placeholder="Mensaje..." class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white h-32"></textarea>
+                    <button type="submit" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Enviar</button>
+                </form>
+            </div>
+        </section>
     </main>
+
+    <!-- MODALES -->
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Iniciar Sesión</h2>
+            <form id="loginForm" class="space-y-4">
+                <input type="email" id="loginEmail" placeholder="Email" required class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                <input type="password" id="loginPassword" placeholder="Contraseña" required class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                <button type="submit" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Iniciar Sesión</button>
+            </form>
+            <button onclick="closeModal('loginModal')" class="mt-4 text-gray-400 hover:text-white">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Registrarse</h2>
+            <form id="registerForm" class="space-y-4">
+                <input type="text" id="registerName" placeholder="Nombre completo" required class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                <input type="email" id="registerEmail" placeholder="Email" required class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                <input type="password" id="registerPassword" placeholder="Contraseña" required class="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
+                <button type="submit" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Registrarse</button>
+            </form>
+            <button onclick="closeModal('registerModal')" class="mt-4 text-gray-400 hover:text-white">Cerrar</button>
+        </div>
+    </div>
+
+    <!-- Product Review Modal -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-4">Dejar Reseña</h2>
+            <div id="reviewContent" class="space-y-4"></div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="border-t border-white/10 bg-[#030303] py-8 px-6 mt-12">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-            <div>© 2025 Giallo Indumentaria. Mataderos, Buenos Aires.</div>
-            <div class="flex gap-6">
-                <a href="https://www.instagram.com/gialloindumentaria/" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition" aria-label="Perfil de Instagram">Instagram</a>
-                <button onclick="switchPage('philosophy')" class="hover:text-cyan-400 transition">Filosofía</button>
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="font-bold text-lg mb-3">Giallo</h3>
+                    <p class="text-sm text-gray-400">Indumentaria deportiva de calidad premium desde Mataderos</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3">Links</h4>
+                    <ul class="space-y-1 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-cyan-400">Tienda</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Diseños</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Contacto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3">Legal</h4>
+                    <ul class="space-y-1 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-cyan-400">Términos</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Privacidad</a></li>
+                        <li><a href="#" class="hover:text-cyan-400">Cookies</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3">Newsletter</h4>
+                    <form id="newsletterForm" class="space-y-2">
+                        <input type="email" placeholder="Tu email" required class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm">
+                        <button type="submit" class="w-full px-3 py-2 rounded-lg bg-cyan-500 text-black font-bold text-sm hover:bg-cyan-400 transition">Suscribir</button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+                <div>© 2025 Giallo Indumentaria. Mataderos, Buenos Aires.</div>
+                <div class="flex gap-4">
+                    <a href="https://www.instagram.com/gialloindumentaria/?igsh=M3llZjc5bm41NmFt" target="_blank" class="hover:text-cyan-400">Instagram</a>
+                    <a href="https://wa.me/541123456789" target="_blank" class="hover:text-cyan-400">WhatsApp</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script>
-        function switchPage(pageId) {
-            // Ocultar todas las páginas
-            document.getElementById('page-home').classList.add('hidden');
-            document.getElementById('page-collections').classList.add('hidden');
-            document.getElementById('page-philosophy').classList.add('hidden');
+        // ===== DATOS Y VARIABLES GLOBALES =====
+        let cart = JSON.parse(localStorage.getItem('gialloCart')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let users = JSON.parse(localStorage.getItem('gialloUsers')) || [];
+        let orders = JSON.parse(localStorage.getItem('gialloOrders')) || [];
+        let reviews = JSON.parse(localStorage.getItem('gialloReviews')) || [];
+        let couponCode = null;
+        let discountPercent = 0;
 
-            // Mostrar la página seleccionada
-            document.getElementById('page-' + pageId).classList.remove('hidden');
+        const products = [
+            { id: 1, name: 'Camiseta Titular Giallo', price: 4500, image: '👕', category: 'camisetas', rating: 4.5, reviews: 12 },
+            { id: 2, name: 'Camiseta Suplente Giallo', price: 4500, image: '👕', category: 'camisetas', rating: 4.3, reviews: 8 },
+            { id: 3, name: 'Short Deportivo', price: 2500, image: '👖', category: 'shorts', rating: 4.2, reviews: 15 },
+            { id: 4, name: 'Buzo Giallo', price: 5500, image: '🧥', category: 'buzos', rating: 4.7, reviews: 10 },
+            { id: 5, name: 'Medias Premium', price: 1500, image: '🧦', category: 'accesorios', rating: 4.0, reviews: 6 },
+            { id: 6, name: 'Bolso Deportivo', price: 3500, image: '🎒', category: 'accesorios', rating: 4.6, reviews: 14 },
+        ];
 
-            // Actualizar estilos del navbar
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                if(btn.dataset.target === pageId) {
-                    btn.classList.add('text-cyan-400');
-                } else {
-                    btn.classList.remove('text-cyan-400');
-                }
-            });
+        const coupons = {
+            'GIALLO10': { discount: 10, description: '10% descuento' },
+            'GIALLO20': { discount: 20, description: '20% descuento' },
+            'VERANO': { discount: 15, description: '15% descuento verano' }
+        };
 
-            // Scroll suave al inicio
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        // ===== AUTENTICACIÓN =====
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
         }
 
-        function filterCategory(cat) {
-            const kits = document.querySelectorAll('.category-kits');
-            const banners = document.querySelectorAll('.category-banners');
-            const filterBtns = document.querySelectorAll('.filter-btn');
+        function openRegisterModal() {
+            document.getElementById('registerModal').classList.add('active');
+        }
 
-            // Actualizar estado de botones
-            filterBtns.forEach(btn => {
-                if(btn.dataset.filter === cat) {
-                    btn.classList.remove('bg-white/5');
-                    btn.classList.add('bg-cyan-500', 'text-black');
-                    btn.setAttribute('aria-pressed', 'true');
-                } else {
-                    btn.classList.add('bg-white/5');
-                    btn.classList.remove('bg-cyan-500', 'text-black');
-                    btn.setAttribute('aria-pressed', 'false');
-                }
-            });
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
 
-            // Aplicar filtro
-            if(cat === 'all') {
-                kits.forEach(el => el.classList.remove('hidden'));
-                banners.forEach(el => el.classList.remove('hidden'));
-            } else if(cat === 'kits') {
-                kits.forEach(el => el.classList.remove('hidden'));
-                banners.forEach(el => el.classList.add('hidden'));
-            } else if(cat === 'banners') {
-                kits.forEach(el => el.classList.add('hidden'));
-                banners.forEach(el => el.classList.remove('hidden'));
+        document.getElementById('loginForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                alert('✅ Sesión iniciada correctamente');
+                closeModal('loginModal');
+                updateUserUI();
+            } else {
+                alert('❌ Email o contraseña incorrectos');
+            }
+        });
+
+        document.getElementById('registerForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            if (users.find(u => u.email === email)) {
+                alert('❌ Este email ya está registrado');
+                return;
+            }
+            const newUser = { id: Date.now(), name, email, password, createdAt: new Date().toLocaleString('es-AR') };
+            users.push(newUser);
+            localStorage.setItem('gialloUsers', JSON.stringify(users));
+            alert('✅ Registro completado. Ahora inicia sesión');
+            closeModal('registerModal');
+        });
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            alert('✅ Sesión cerrada');
+            updateUserUI();
+        }
+
+        function updateUserUI() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userInfo = document.getElementById('userInfo');
+            if (currentUser) {
+                logoutBtn.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+            } else {
+                logoutBtn.classList.add('hidden');
+                userInfo.classList.add('hidden');
             }
         }
 
-        // Inicializar página
-        window.addEventListener('load', () => {
+        function toggleUserMenu() {
+            document.getElementById('userMenu').classList.toggle('hidden');
+        }
+
+        // ===== NAVEGACIÓN =====
+        function switchPage(pageId) {
+            document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.toggle('text-cyan-400', btn.dataset.target === pageId);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pageId === 'shop') loadShop();
+            if (pageId === 'cart') updateCartView();
+            if (pageId === 'pedidos') loadOrders();
+        }
+
+        // ===== TIENDA =====
+        function loadShop() {
+            const grid = document.getElementById('shopGrid');
+            let filtered = products;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search));
+            const sort = document.getElementById('sortSelect').value;
+            if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+            if (sort === 'name') filtered.sort((a, b) => a.name.localeCompare(b.name));
+            grid.innerHTML = filtered.map(p => `
+                <div class="glass-card rounded-2xl p-4 space-y-3 fade-in">
+                    <div class="h-48 rounded-xl bg-gradient-to-br from-gray-900 to-black flex items-center justify-center border border-white/5 text-5xl">${p.image}</div>
+                    <div><h3 class="font-bold text-base">${p.name}</h3>
+                    <div class="flex gap-1 mb-2">⭐ ${p.rating} (${p.reviews} reseñas)</div>
+                    <p class="text-xs text-gray-400 mb-3">Producto premium Giallo</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-cyan-400 font-bold text-lg">$${p.price}</span>
+                        <button onclick="addToCart(${p.id})" class="px-3 py-2 rounded-lg bg-cyan-500 text-black text-xs font-bold hover:bg-cyan-400 transition">🛒 Agregar</button>
+                    </div>
+                    <button onclick="openReviewModal(${p.id})" class="w-full mt-2 px-2 py-1 rounded-lg bg-white/5 text-white text-xs hover:bg-white/10 transition">Ver Reseñas</button></div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts() {
+            loadShop();
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            localStorage.setItem('gialloCart', JSON.stringify(cart));
+            updateCartCount();
+            alert('✅ Producto agregado al carrito');
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartCount');
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'flex' : 'none';
+        }
+
+        function updateCartView() {
+            const cartItems = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="glass-card p-6 text-center text-gray-400">Tu carrito está vacío</div>';
+                updateTotals();
+                return;
+            }
+            cartItems.innerHTML = cart.map((item, i) => `
+                <div class="glass-card p-4 rounded-xl flex justify-between items-center">
+                    <div class="flex-grow">
+                        <h3 class="font-bold">${item.name}</h3>
+                        <p class="text-sm text-gray-400">$${item.price} x ${item.quantity}</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <button onclick="updateQuantity(${i}, -1)" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20">-</button>
+                        <span class="w-8 text-center">${item.quantity}</span>
+                        <button onclick="updateQuantity(${i}, 1)" class="px-2 py-1 rounded bg-white/10 hover:bg-white/20">+</button>
+                        <button onclick="removeFromCart(${i})" class="px-3 py-2 rounded bg-red-600/20 hover:bg-red-600/40 text-red-400">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            updateTotals();
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity <= 0) removeFromCart(index);
+            localStorage.setItem('gialloCart', JSON.stringify(cart));
+            updateCartView();
+            updateCartCount();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('gialloCart', JSON.stringify(cart));
+            updateCartView();
+            updateCartCount();
+        }
+
+        function updateTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = Math.floor(subtotal * (discountPercent / 100));
+            const shipping = subtotal > 5000 ? 0 : 500;
+            const total = subtotal - discount + shipping;
+            document.getElementById('subtotal').textContent = '$' + subtotal;
+            document.getElementById('discountAmount').textContent = '-$' + discount;
+            document.getElementById('shipping').textContent = '$' + shipping;
+            document.getElementById('total').textContent = '$' + total;
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponInput').value;
+            if (coupons[code]) {
+                discountPercent = coupons[code].discount;
+                alert('✅ Cupón aplicado: ' + coupons[code].description);
+                updateTotals();
+            } else {
+                alert('❌ Cupón inválido');
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            if (!currentUser) {
+                alert('Por favor inicia sesión primero');
+                openLoginModal();
+                return;
+            }
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = Math.floor(subtotal * (discountPercent / 100));
+            const shipping = subtotal > 5000 ? 0 : 500;
+            const total = subtotal - discount + shipping;
+            const order = {
+                id: 'GIA-' + Date.now(),
+                userId: currentUser.id,
+                items: cart,
+                subtotal, discount, shipping, total,
+                status: 'Procesando',
+                date: new Date().toLocaleString('es-AR')
+            };
+            orders.push(order);
+            localStorage.setItem('gialloOrders', JSON.stringify(orders));
+            cart = [];
+            localStorage.setItem('gialloCart', JSON.stringify(cart));
+            updateCartCount();
+            discountPercent = 0;
+            alert('✅ Pedido creado: ' + order.id + '\n💰 Total: $' + total);
             switchPage('home');
+        }
+
+        function openWhatsApp() {
+            if (cart.length === 0) return alert('Carrito vacío');
+            const summary = cart.map(item => `${item.name} (x${item.quantity})`).join('\n');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const msg = `Hola Giallo! 👋\n\nPedido:\n${summary}\n\nTotal: $${subtotal}`;
+            window.open(`https://wa.me/541123456789?text=${encodeURIComponent(msg)}`);
+        }
+
+        // ===== EDITOR DE DISEÑOS =====
+        function updatePreview() {
+            const mainColor = document.getElementById('mainColor').value;
+            const secondaryColor = document.getElementById('secondaryColor').value;
+            const text = document.getElementById('designText').value || 'GIALLO';
+            const preview = document.getElementById('designPreview');
+            preview.style.backgroundColor = mainColor;
+            preview.style.color = secondaryColor;
+            preview.textContent = text;
+        }
+
+        function saveDesign() {
+            const design = {
+                garment: document.getElementById('garmentType').value,
+                mainColor: document.getElementById('mainColor').value,
+                secondaryColor: document.getElementById('secondaryColor').value,
+                text: document.getElementById('designText').value,
+                timestamp: new Date().toLocaleString('es-AR')
+            };
+            let designs = JSON.parse(localStorage.getItem('gialloDesigns')) || [];
+            designs.push(design);
+            localStorage.setItem('gialloDesigns', JSON.stringify(designs));
+            alert('✅ Diseño guardado');
+        }
+
+        function addDesignToCart() {
+            const design = {
+                id: Math.random(),
+                name: `Diseño Personalizado - ${document.getElementById('designText').value || 'GIALLO'}`,
+                price: 6000,
+                image: '🎨',
+                quantity: 1
+            };
+            cart.push(design);
+            localStorage.setItem('gialloCart', JSON.stringify(cart));
+            updateCartCount();
+            alert('✅ Diseño agregado al carrito');
+        }
+
+        // ===== PEDIDOS =====
+        function loadOrders() {
+            const ordersList = document.getElementById('ordersList');
+            if (!currentUser) {
+                ordersList.innerHTML = '<div class="glass-card p-6 text-center text-gray-400">Inicia sesión para ver tus pedidos</div>';
+                return;
+            }
+            const userOrders = orders.filter(o => o.userId === currentUser.id);
+            if (userOrders.length === 0) {
+                ordersList.innerHTML = '<div class="glass-card p-6 text-center text-gray-400">No tienes pedidos aún</div>';
+                return;
+            }
+            ordersList.innerHTML = userOrders.map(order => `
+                <div class="glass-card p-4 rounded-xl space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold">${order.id}</span>
+                        <span class="px-2 py-1 rounded text-xs font-bold" style="background: ${order.status === 'Entregado' ? 'rgba(34,197,94,0.2); color: rgb(74,222,128)' : 'rgba(59,130,246,0.2); color: rgb(96,165,250)'};">${order.status}</span>
+                    </div>
+                    <p class="text-sm text-gray-400">📅 ${order.date}</p>
+                    <p class="text-sm">Artículos: ${order.items.length}</p>
+                    <p class="text-lg font-bold text-cyan-400">Total: $${order.total}</p>
+                </div>
+            `).join('');
+        }
+
+        // ===== RESEÑAS =====
+        function openReviewModal(productId) {
+            const product = products.find(p => p.id === productId);
+            const productReviews = reviews.filter(r => r.productId === productId);
+            document.getElementById('reviewContent').innerHTML = `
+                <h3 class="font-bold text-lg">${product.name}</h3>
+                <div class="text-sm text-gray-400 mb-4">⭐ ${product.rating} de 5 (${productReviews.length} reseñas)</div>
+                <div id="reviewsList" class="space-y-3 max-h-48 overflow-y-auto mb-4">
+                    ${productReviews.length === 0 ? '<p class="text-gray-400">Sin reseñas aún</p>' : productReviews.map(r => `
+                        <div class="glass-card p-3 rounded-lg">
+                            <p class="font-semibold">${r.userName}</p>
+                            <div class="text-yellow-400">${'⭐'.repeat(r.rating)}</div>
+                            <p class="text-sm text-gray-300">${r.comment}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                ${currentUser ? `
+                    <div class="space-y-2 border-t border-white/10 pt-4">
+                        <p class="font-semibold">Dejar tu reseña:</p>
+                        <div class="star-rating" id="starRating">
+                            ${[1,2,3,4,5].map(i => `<span class="star" onclick="setRating(${i})">⭐</span>`).join('')}
+                        </div>
+                        <textarea id="reviewComment" placeholder="Tu comentario..." class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm h-20"></textarea>
+                        <button onclick="submitReview(${productId})" class="w-full px-4 py-2 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition text-sm">Enviar Reseña</button>
+                    </div>
+                ` : '<p class="text-gray-400 text-sm">Inicia sesión para dejar una reseña</p>'}
+            `;
+            document.getElementById('reviewModal').classList.add('active');
+        }
+
+        let currentRating = 0;
+        function setRating(rating) {
+            currentRating = rating;
+            document.querySelectorAll('#starRating .star').forEach((s, i) => {
+                s.style.opacity = i < rating ? '1' : '0.3';
+            });
+        }
+
+        function submitReview(productId) {
+            const comment = document.getElementById('reviewComment').value;
+            if (!comment || currentRating === 0) {
+                alert('Por favor completa la reseña');
+                return;
+            }
+            reviews.push({
+                productId, rating: currentRating, comment,
+                userName: currentUser.name,
+                date: new Date().toLocaleString('es-AR')
+            });
+            localStorage.setItem('gialloReviews', JSON.stringify(reviews));
+            alert('✅ Reseña enviada');
+            document.getElementById('reviewModal').classList.remove('active');
+            loadShop();
+        }
+
+        // ===== NEWSLETTER =====
+        document.getElementById('newsletterForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ ¡Suscrito al newsletter!');
+            e.target.reset();
         });
+
+        document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('✅ Mensaje enviado. Nos comunicaremos pronto!');
+            e.target.reset();
+        });
+
+        // ===== INICIALIZAR =====
+        updateCartCount();
+        updateUserUI();
+        switchPage('home');
     </script>
 </body>
 </html>
