@@ -1,306 +1,334 @@
-<!-- Giallo Scores Widget - Versión Pro Elite por Lorenzo Giamborino -->
-<div id="giallo-widget-root" style="background-color: #000000; color: #ffffff; border-radius: 0px; overflow: hidden; max-width: 480px; margin: 0 auto; font-family: 'Archivo', sans-serif; min-height: 1[...]
-    
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Giallo Indumentaria - Colección oficial de diseños deportivos desde Mataderos, Buenos Aires. Kits técnicos, estandartes y proyectos exclusivos.">
+    <meta name="keywords" content="indumentaria, deportiva, diseño, Mataderos, Buenos Aires, Giallo">
+    <meta name="author" content="Giallo Indumentaria">
+    <meta property="og:title" content="Giallo Indumentaria - Colección Oficial">
+    <meta property="og:description" content="Diseños exclusivos para quienes buscan la excelencia técnica dentro y fuera de la cancha.">
+    <meta property="og:type" content="website">
+    <title>Giallo Indumentaria - Colección Oficial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#030303',
+                        neoncyan: '#00ffff',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&display=swap');
-        
-        /* Eliminar bordes blancos de cualquier contenedor */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        #giallo-widget-root .league-header {
-            background: #0a0a0a;
-            padding: 8px 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #111;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+        @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700;800&display=swap");
+
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            background-color: #030303;
+            color: white;
+            overflow-x: hidden;
         }
 
-        #giallo-widget-root .match-card {
-            background: #050505; 
-            border-bottom: 1px solid #111;
-            padding: 16px 24px; 
-            cursor: pointer; 
-            transition: 0.2s;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        #giallo-widget-root .match-card:active { background: #111; }
 
-        #giallo-widget-root .status-label {
-            font-size: 8px; font-weight: 900; padding: 3px 8px; border-radius: 6px; text-transform: uppercase;
+        .glass-card:hover {
+            background: rgba(0, 255, 255, 0.03);
+            border-color: rgba(0, 255, 255, 0.3);
+            transform: translateY(-5px);
         }
-        #giallo-widget-root .status-live { background: #ef4444; color: white; animation: giallo-pulse 1.5s infinite; }
-        #giallo-widget-root .status-final { background: #222; color: #666; }
-        #giallo-widget-root .status-next { background: #000; color: #3b82f6; border: 1px solid #3b82f644; }
 
-        @keyframes giallo-pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
-
-        #giallo-widget-root .btn-nav {
-            background: #0a0a0a; color: #444; padding: 10px; border-radius: 12px; font-size: 10px; font-weight: 900; flex: 1; border: 1px solid #111; cursor: pointer;
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
         }
-        #giallo-widget-root .btn-nav.active { background: #3b82f6; color: white; border-color: #3b82f6; }
 
-        #giallo-widget-root .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 100; display: none; overflow-y: auto; padding: 20px;
+        .light-rays-bg {
+            background: radial-gradient(circle at 50% -20%, rgba(0, 255, 255, 0.15) 0%, rgba(3, 3, 3, 1) 70%);
         }
-        #giallo-widget-root .scroll-area::-webkit-scrollbar { display: none; }
-        
-        #giallo-widget-root .stat-bar-bg { background: #111; height: 4px; border-radius: 2px; display: flex; overflow: hidden; margin-top: 4px; }
-        #giallo-widget-root .stat-fill-l { background: #3b82f6; height: 100%; }
-        #giallo-widget-root .stat-fill-r { background: #333; height: 100%; }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
-
-    <!-- Header -->
-    <div style="padding: 24px; background: #000;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <div>
-                <h2 style="margin: 0; font-size: 20px; font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -1px;">GIALLO <span style="color: #3b82f6;">SCORES</span></h2>
-                <p id="tn-clock" style="margin: 2px 0 0 0; font-size: 8px; color: #333; font-weight: 700; text-transform: uppercase;"></p>
-            </div>
-            <button onclick="toggleSearchUI()" style="background: #111; border: none; color: white; padding: 10px 14px; border-radius: 12px; font-size: 9px; font-weight: 900; cursor: pointer;">BUSCAR</button>
-        </div>
-        <div id="fav-container" style="display: flex; gap: 12px; overflow-x: auto;" class="scroll-area"></div>
-    </div>
-
-    <!-- Buscador -->
-    <div id="search-box" style="display: none; padding: 0 24px 20px 24px; background: #000;">
-        <input type="text" id="team-search-input" style="width:100%; background:#0a0a0a; border:1px solid #111; border-radius:14px; padding:14px; color:white; outline:none; font-size: 12px;" placeholder="Busca un equipo...">
-        <div id="search-results" style="max-height: 300px; overflow-y: auto;" class="scroll-area"></div>
-    </div>
+</head>
+<body class="light-rays-bg min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
 
     <!-- Navegación -->
-    <div style="display: flex; gap: 8px; padding: 0 24px 20px 24px;">
-        <button onclick="updateGiallo(-1)" id="btn-prev" class="btn-nav">AYER</button>
-        <button onclick="updateGiallo(0)" id="btn-today" class="btn-nav active">HOY</button>
-        <button onclick="updateGiallo(1)" id="btn-next" class="btn-nav">MAÑANA</button>
-    </div>
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#030303]/80 border-b border-white/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <button onclick="switchPage('home')" class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition" aria-label="Ir a inicio">
+                <div class="w-10 h-10 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-bold text-lg">
+                    G
+                </div>
+                <div>
+                    <span class="font-extrabold tracking-wider text-lg text-white">GIALLO</span>
+                    <span class="block text-[10px] text-cyan-400 tracking-widest uppercase">Mataderos 2025</span>
+                </div>
+            </button>
 
-    <!-- Feed Principal -->
-    <div id="giallo-feed" class="scroll-area"></div>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-300">
+                <button onclick="switchPage('home')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="home" aria-label="Ir a Home">Home</button>
+                <button onclick="switchPage('collections')" class="hover:text-cyan-400 transition-colors text-cyan-400 nav-btn" data-target="collections" aria-label="Ver Colecciones">Collections</button>
+                <button onclick="switchPage('philosophy')" class="hover:text-cyan-400 transition-colors nav-btn" data-target="philosophy" aria-label="Leer nuestra Filosofía">Philosophy</button>
+            </nav>
 
-    <!-- Modal Detalles -->
-    <div id="giallo-modal" class="modal-overlay scroll-area">
-        <div style="display: flex; justify-content: flex-start; margin-bottom: 20px;">
-            <button onclick="closeModal()" style="background:#111; border:none; color:white; padding:10px 20px; border-radius:12px; font-size:10px; font-weight:900;">← VOLVER</button>
+            <div class="flex items-center gap-4">
+                <a href="https://www.instagram.com/gialloindumentaria/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full bg-cyan-500 text-black hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20" aria-label="Seguinos en Instagram">
+                    Instagram
+                </a>
+            </div>
         </div>
-        <div id="modal-body"></div>
-    </div>
-</div>
+    </header>
 
-<script>
-    (function() {
-        const KEY = "3baea1631eade87185fc0ab76b70a8e9";
-        const URL = "https://v3.football.api-sports.io";
-        let userFavs = JSON.parse(localStorage.getItem('giallo_user_favs')) || [];
-        let searchTimeout;
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-7xl mx-auto px-6 py-12 w-full">
 
-        const LEAGUE_PRIORITY = { 2: 100, 11: 95, 128: 90, 13: 85, 130: 80, 140: 75, 39: 75 };
+        <!-- VISTA HOME -->
+        <section id="page-home" class="space-y-16 fade-in">
+            <div class="text-center space-y-6 max-w-3xl mx-auto py-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+                    <span>✨ Innovación & Gloria</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                    Indumentaria de Alta Gama <span class="text-cyan-400 text-glow">Desde Mataderos</span>
+                </h1>
+                <p class="text-gray-400 text-base md:text-lg">
+                    Diseños exclusivos para quienes buscan la excelencia técnica dentro y fuera de la cancha.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 pt-4">
+                    <button onclick="switchPage('collections')" class="px-8 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition shadow-lg shadow-cyan-500/25" aria-label="Ver colección completa">
+                        Ver Colección
+                    </button>
+                    <button onclick="switchPage('philosophy')" class="px-8 py-3 rounded-xl glass-card text-white font-semibold hover:border-cyan-400/50 transition" aria-label="Leer nuestra filosofía">
+                        Nuestra Filosofía
+                    </button>
+                </div>
+            </div>
+        </section>
 
-        async function callApi(path) {
-            try {
-                const r = await fetch(`${URL}/${path}`, {
-                    headers: { "x-rapidapi-key": KEY, "x-rapidapi-host": "v3.football.api-sports.io" }
-                });
-                return await r.json();
-            } catch (e) { return null; }
+        <!-- VISTA COLLECTIONS -->
+        <section id="page-collections" class="space-y-8 hidden fade-in">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-white/10 pb-6">
+                <div>
+                    <h1 class="text-3xl font-extrabold tracking-tight">Colección Oficial & Diseños</h1>
+                    <p class="text-sm text-gray-400">Kits de partido, indumentaria técnica, estandartes y proyectos exclusivos.</p>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="filterCategory('all')" class="filter-btn px-3 py-1.5 rounded-lg bg-cyan-500 text-black text-xs font-bold transition" data-filter="all" aria-pressed="true">Todos</button>
+                    <button onclick="filterCategory('kits')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-semibold transition" data-filter="kits" aria-pressed="false">Kits</button>
+                    <button onclick="filterCategory('banners')" class="filter-btn px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-semibold transition" data-filter="banners" aria-pressed="false">Estandartes</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Item 1: Kit Principal -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">MATCH KIT</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Kit Deportivo Oficial</span>
+                            <div class="text-cyan-400 font-bold text-sm">Giallo Pro Edición N°11</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Camiseta Titular Giallo</h3>
+                        <p class="text-xs text-gray-400">Diseño aerodinámico, costuras reforzadas y tecnología de alto rendimiento.</p>
+                    </div>
+                </div>
+
+                <!-- Item 2: Kit Alternativo -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">ALTERNATIVA</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Kit Visitante</span>
+                            <div class="text-cyan-400 font-bold text-sm">Edición Táctica Oscura</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Camiseta Suplente Giallo</h3>
+                        <p class="text-xs text-gray-400">Inspirada en la elegancia nocturna y la precisión táctica en cancha de 11.</p>
+                    </div>
+                </div>
+
+                <!-- Item 3: Mockup de Diseño -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">PROTOTIPO</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Plano de Confección</span>
+                            <div class="text-cyan-400 font-bold text-sm">Patrón N° 11</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Mockup Técnico de Camiseta</h3>
+                        <p class="text-xs text-gray-400">Estructura de diseño y detalles de patronaje exclusivos de la marca.</p>
+                    </div>
+                </div>
+
+                <!-- Item 4: Estandarte / Bandera -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-banners hidden">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-blue-950/40 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full font-bold">BANDERA OFICIAL</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Argentino de Mataderos</span>
+                            <div class="text-blue-400 font-bold text-sm">"Siempre te voy a seguir"</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Estandarte Institucional</h3>
+                        <p class="text-xs text-gray-400">Gráfica de tribuna y símbolos tradicionales del club de baby y campo.</p>
+                    </div>
+                </div>
+
+                <!-- Item 5: Bandera / Lema -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-banners hidden">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-blue-950/40 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-blue-500/20 text-blue-400 px-2.5 py-1 rounded-full font-bold">BANDERA OFICIAL</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Identidad de Barrio</span>
+                            <div class="text-blue-400 font-bold text-sm">"El que abandona no tiene premio"</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Bandera Tradicional</h3>
+                        <p class="text-xs text-gray-400">Diseño aplicado sobre fondo de ladrillos con los colores y la mística del club.</p>
+                    </div>
+                </div>
+
+                <!-- Item 6: Proceso Creativo -->
+                <div class="glass-card rounded-2xl p-4 space-y-3 category-kits">
+                    <div class="h-60 rounded-xl bg-gradient-to-br from-gray-900 to-black overflow-hidden flex items-center justify-center border border-white/5 relative">
+                        <span class="absolute top-3 left-3 text-[10px] bg-cyan-500/20 text-cyan-400 px-2.5 py-1 rounded-full font-bold">PROCESO</span>
+                        <div class="text-center p-4">
+                            <span class="text-xs text-gray-400 block mb-1">Estampado Textil</span>
+                            <div class="text-cyan-400 font-bold text-sm">Sellos Artesanales</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base">Técnica de Estampado Giallo</h3>
+                        <p class="text-xs text-gray-400">Detalle artesanal de los sellos de madera sobre soporte textil.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VISTA PHILOSOPHY -->
+        <section id="page-philosophy" class="space-y-12 max-w-4xl mx-auto hidden fade-in">
+            <div class="text-center space-y-4 py-8">
+                <span class="text-xs uppercase tracking-widest text-cyan-400 font-bold">Nuestra Esencia</span>
+                <h1 class="text-4xl font-extrabold tracking-tight">Nacidos en Mataderos, Pensados para la Gloria</h1>
+                <p class="text-gray-400 text-base">
+                    Giallo es la unión perfecta entre la pasión de barrio y la exigencia del deporte competitivo.
+                </p>
+            </div>
+
+            <div class="space-y-6 text-gray-300">
+                <div class="glass-card p-6 rounded-xl">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-3">Nuestra Misión</h2>
+                    <p>Crear indumentaria deportiva que trascienda lo técnico y se convierta en símbolo de identidad, pasión y excelencia. Cada diseño cuenta la historia de Mataderos, del barrio, de la gente que vive y respira fútbol.</p>
+                </div>
+
+                <div class="glass-card p-6 rounded-xl">
+                    <h2 class="text-xl font-bold text-cyan-400 mb-3">Valores</h2>
+                    <ul class="space-y-2 list-disc list-inside">
+                        <li>Excelencia técnica en cada prenda</li>
+                        <li>Diseño innovador con raíces barrialeñas</li>
+                        <li>Compromiso con la comunidad deportiva</li>
+                        <li>Autenticidad en cada proyecto</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-[#030303] py-8 px-6 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+            <div>© 2025 Giallo Indumentaria. Mataderos, Buenos Aires.</div>
+            <div class="flex gap-6">
+                <a href="https://www.instagram.com/gialloindumentaria/" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition" aria-label="Perfil de Instagram">Instagram</a>
+                <button onclick="switchPage('philosophy')" class="hover:text-cyan-400 transition">Filosofía</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        function switchPage(pageId) {
+            // Ocultar todas las páginas
+            document.getElementById('page-home').classList.add('hidden');
+            document.getElementById('page-collections').classList.add('hidden');
+            document.getElementById('page-philosophy').classList.add('hidden');
+
+            // Mostrar la página seleccionada
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            // Actualizar estilos del navbar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === pageId) {
+                    btn.classList.add('text-cyan-400');
+                } else {
+                    btn.classList.remove('text-cyan-400');
+                }
+            });
+
+            // Scroll suave al inicio
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        window.toggleSearchUI = () => {
-            const box = document.getElementById('search-box');
-            box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        };
+        function filterCategory(cat) {
+            const kits = document.querySelectorAll('.category-kits');
+            const banners = document.querySelectorAll('.category-banners');
+            const filterBtns = document.querySelectorAll('.filter-btn');
 
-        window.closeModal = () => { document.getElementById('giallo-modal').style.display = 'none'; };
+            // Actualizar estado de botones
+            filterBtns.forEach(btn => {
+                if(btn.dataset.filter === cat) {
+                    btn.classList.remove('bg-white/5');
+                    btn.classList.add('bg-cyan-500', 'text-black');
+                    btn.setAttribute('aria-pressed', 'true');
+                } else {
+                    btn.classList.add('bg-white/5');
+                    btn.classList.remove('bg-cyan-500', 'text-black');
+                    btn.setAttribute('aria-pressed', 'false');
+                }
+            });
 
-        window.showMatch = async (id) => {
-            const body = document.getElementById('modal-body');
-            document.getElementById('giallo-modal').style.display = 'block';
-            body.innerHTML = '<p style="text-align:center; padding:100px; font-size:10px; font-weight:900; color:#3b82f6;">CARGANDO...</p>';
-
-            const data = await callApi(`fixtures?id=${id}&timezone=America/Argentina/Buenos_Aires`);
-            const m = data.response[0];
-
-            const events = m.events || [];
-            const homeEvents = events.filter(e => e.team.id === m.teams.home.id);
-            const awayEvents = events.filter(e => e.team.id === m.teams.away.id);
-
-            const stats = m.statistics || [];
-            const getStat = (label) => {
-                if(!stats.length) return {h:0, a:0, ph:0, pa:0};
-                const h = stats[0].statistics.find(s => s.type === label)?.value || 0;
-                const a = stats[1].statistics.find(s => s.type === label)?.value || 0;
-                const total = (parseFloat(h) || 0) + (parseFloat(a) || 0);
-                return { h, a, ph: total ? (parseFloat(h)/total)*100 : 50, pa: total ? (parseFloat(a)/total)*100 : 50 };
-            };
-
-            const pos = getStat("Ball Possession");
-
-            body.innerHTML = `
-                <div style="text-align:center; margin-bottom:30px;">
-                    <p style="font-size:10px; color:#555; font-weight:900; margin-bottom:20px;">${m.league.name.toUpperCase()}</p>
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <div style="width:35%;">
-                            <img src="${m.teams.home.logo}" style="width:50px;">
-                            <p style="font-size:11px; font-weight:900; margin-top:10px;">${m.teams.home.name}</p>
-                        </div>
-                        <div style="width:30%;">
-                            <p style="font-size:36px; font-weight:900;">${m.goals.home ?? 0}:${m.goals.away ?? 0}</p>
-                            <p style="font-size:9px; color:#ef4444; font-weight:900;">${m.fixture.status.long.toUpperCase()}</p>
-                        </div>
-                        <div style="width:35%;">
-                            <img src="${m.teams.away.logo}" style="width:50px;">
-                            <p style="font-size:11px; font-weight:900; margin-top:10px;">${m.teams.away.name}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="background:#0a0a0a; border-radius:20px; padding:20px; border:1px solid #111; margin-bottom:20px;">
-                    <p style="font-size:9px; font-weight:900; color:#444; margin-bottom:12px; text-align:center;">ESTADÍSTICAS</p>
-                    <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:900; margin-bottom:5px;">
-                        <span>${pos.h || '0%'}</span><span>POSESIÓN</span><span>${pos.a || '0%'}</span>
-                    </div>
-                    <div class="stat-bar-bg"><div style="background:#3b82f6; width:${pos.ph}%"></div><div style="background:#222; width:${pos.pa}%"></div></div>
-                </div>
-
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div>
-                        ${homeEvents.map(e => `<div style="display:flex; justify-content:flex-end; gap:8px; font-size:10px; margin-bottom:10px; text-align:right;"><span>${e.player.name}<br><small style="color:#3b82f6;">${e.type.toUpperCase()}</small></span><b>${e.time.elapsed}'</b></div>`).join('')}
-                    </div>
-                    <div>
-                        ${awayEvents.map(e => `<div style="display:flex; gap:8px; font-size:10px; margin-bottom:10px;"><b style="color:#3b82f6;">${e.time.elapsed}'</b><span>${e.player.name}<br><small style="color:#3b82f6;">${e.type.toUpperCase()}</small></span></div>`).join('')}
-                    </div>
-                </div>
-            `;
-        };
-
-        window.updateGiallo = async (offset) => {
-            const feed = document.getElementById('giallo-feed');
-            document.querySelectorAll('.btn-nav').forEach(b => b.classList.remove('active'));
-            if(offset === -1) document.getElementById('btn-prev').classList.add('active');
-            if(offset === 0) document.getElementById('btn-today').classList.add('active');
-            if(offset === 1) document.getElementById('btn-next').classList.add('active');
-
-            feed.innerHTML = '<p style="text-align:center; padding:100px; font-size:10px; font-weight:900; color:#3b82f6;">ACTUALIZANDO...</p>';
-
-            const argDate = new Date(new Date().toLocaleString("en-US", {timeZone: "America/Argentina/Buenos_Aires"}));
-            argDate.setDate(argDate.getDate() + offset);
-            const dateStr = argDate.toISOString().split('T')[0];
-
-            const data = await callApi(`fixtures?date=${dateStr}&timezone=America/Argentina/Buenos_Aires`);
-
-            if(!data?.response?.length) {
-                feed.innerHTML = '<p style="text-align:center; padding:100px; color:#333; font-size:10px; font-weight:900;">SIN PARTIDOS HOY</p>';
-                return;
+            // Aplicar filtro
+            if(cat === 'all') {
+                kits.forEach(el => el.classList.remove('hidden'));
+                banners.forEach(el => el.classList.remove('hidden'));
+            } else if(cat === 'kits') {
+                kits.forEach(el => el.classList.remove('hidden'));
+                banners.forEach(el => el.classList.add('hidden'));
+            } else if(cat === 'banners') {
+                kits.forEach(el => el.classList.add('hidden'));
+                banners.forEach(el => el.classList.remove('hidden'));
             }
+        }
 
-            // --- LÓGICA DE AGRUPACIÓN POR LIGA ---
-            const grouped = {};
-            data.response.forEach(m => {
-                const lId = m.league.id;
-                if(!grouped[lId]) grouped[lId] = { info: m.league, matches: [] };
-                grouped[lId].matches.push(m);
-            });
-
-            // Ordenar ligas por prioridad
-            const sortedLeagues = Object.values(grouped).sort((a, b) => (LEAGUE_PRIORITY[b.info.id] || 0) - (LEAGUE_PRIORITY[a.info.id] || 0));
-
-            feed.innerHTML = '';
-            sortedLeagues.forEach(group => {
-                // Header de Liga
-                const lHead = document.createElement('div');
-                lHead.className = 'league-header';
-                lHead.innerHTML = `<img src="${group.info.logo}" style="width:16px; height:16px; object-fit:contain;"><span style="font-size:9px; font-weight:900; letter-spacing:1px; color:#555;">${group.info.name.toUpperCase()}</span>`;
-                feed.appendChild(lHead);
-
-                // Partidos de esa liga
-                group.matches.forEach(m => {
-                    const status = m.fixture.status.short;
-                    const isLive = ["1H", "2H", "HT"].includes(status);
-                    const isFT = ["FT", "AET", "PEN"].includes(status);
-                    const isNS = status === "NS";
-
-                    let labelClass = "status-next";
-                    let labelText = status;
-                    if(isLive) { labelClass = "status-live"; labelText = `${m.fixture.status.elapsed}'`; }
-                    if(isFT) { labelClass = "status-final"; labelText = "FIN"; }
-                    if(isNS) { labelText = new Date(m.fixture.date).toLocaleTimeString("es-AR", { hour: '2-digit', minute: '2-digit', timeZone: "America/Argentina/Buenos_Aires" }); }
-
-                    const card = document.createElement('div');
-                    card.className = 'match-card';
-                    card.onclick = () => showMatch(m.fixture.id);
-                    card.innerHTML = `
-                        <div style="display:flex; align-items:center; justify-content:space-between;">
-                            <div style="width:35%; display:flex; align-items:center; gap:10px;">
-                                <img src="${m.teams.home.logo}" style="width:20px; height:20px; object-fit:contain;">
-                                <span style="font-size:11px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.teams.home.name}</span>
-                            </div>
-                            <div style="width:20%; text-align:center;">
-                                <span style="font-size:14px; font-weight:900; color:${isLive?'#ef4444':'#fff'}">${isNS ? '-' : m.goals.home} : ${isNS ? '-' : m.goals.away}</span>
-                            </div>
-                            <div style="width:35%; display:flex; align-items:center; gap:10px; justify-content:flex-end;">
-                                <span style="font-size:11px; font-weight:700; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.teams.away.name}</span>
-                                <img src="${m.teams.away.logo}" style="width:20px; height:20px; object-fit:contain;">
-                            </div>
-                            <div style="width:10%; text-align:right;">
-                                <span class="status-label ${labelClass}" style="padding:2px 5px; font-size:7px;">${labelText}</span>
-                            </div>
-                        </div>
-                    `;
-                    feed.appendChild(card);
-                });
-            });
-        };
-
-        // Búsqueda y Favoritos
-        document.getElementById('team-search-input').addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            clearTimeout(searchTimeout);
-            if(query.length < 3) return;
-            searchTimeout = setTimeout(async () => {
-                const data = await callApi(`teams?search=${query}`);
-                const res = document.getElementById('search-results');
-                res.innerHTML = '';
-                data.response.forEach(item => {
-                    const t = item.team;
-                    const div = document.createElement('div');
-                    div.style = "display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #111; align-items:center;";
-                    div.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><img src="${t.logo}" style="width:20px;"> <span style="font-size:11px; font-weight:900;">${t.name}</span></div>
-                                     <button onclick="toggleFixTeam(${t.id}, '${t.name}', '${t.logo}')" style="background:#111; color:#3b82f6; border:none; border-radius:8px; padding:5px 10px; font-size:10px; font-weight:900; cursor:pointer;">+ FAV</button>`;
-                    res.appendChild(div);
-                });
-            }, 500);
+        // Inicializar página
+        window.addEventListener('load', () => {
+            switchPage('home');
         });
-
-        window.toggleFixTeam = (id, name, logo) => {
-            const index = userFavs.findIndex(f => f.id === id);
-            if(index > -1) userFavs.splice(index, 1);
-            else { if(userFavs.length >= 6) userFavs.shift(); userFavs.push({id, name, logo}); }
-            localStorage.setItem('giallo_user_favs', JSON.stringify(userFavs));
-            renderFavBar();
-            updateGiallo(0);
-        };
-
-        function renderFavBar() {
-            const container = document.getElementById('fav-container');
-            container.innerHTML = '';
-            userFavs.forEach(team => {
-                const img = document.createElement('img');
-                img.src = team.logo;
-                img.style = "width:36px; height:36px; border-radius:50%; border:1px solid #222; padding:5px; cursor:pointer; background:#0a0a0a; flex-shrink:0;";
-                img.onclick = () => updateGiallo(0); // Podría filtrar, pero por ahora refresca
-                container.appendChild(img);
-            });
-        }
-
-        function start() {
-            renderFavBar();
-            updateGiallo(0);
-            setInterval(() => {
-                document.getElementById('tn-clock').innerText = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Argentina/Buenos_Aires' }) + ' • BUENOS AIRES';
-            }, 1000);
-        }
-        start();
-    })();
-</script>
+    </script>
+</body>
+</html>
