@@ -222,7 +222,6 @@
                     <input type="text" id="couponInput" placeholder="Código de cupón" class="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white">
                     <button onclick="applyCoupon()" class="w-full px-4 py-2 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition text-sm">Aplicar Cupón</button>
                     <button onclick="checkout()" class="w-full px-4 py-3 rounded-lg bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition">Proceder al Pago</button>
-                    <button onclick="openWhatsApp()" class="w-full px-4 py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition">📱 WhatsApp</button>
                 </div>
             </div>
         </section>
@@ -263,12 +262,7 @@
         <section id="page-contact" class="space-y-8 hidden fade-in">
             <div class="max-w-2xl mx-auto">
                 <h1 class="text-3xl font-extrabold tracking-tight mb-8">Contacto</h1>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-card p-6 text-center rounded-xl space-y-2">
-                        <div class="text-2xl">📱</div>
-                        <h3 class="font-bold">WhatsApp</h3>
-                        <a href="https://wa.me/541123456789" target="_blank" class="text-cyan-400 hover:underline text-sm">+54 11 2345-6789</a>
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="glass-card p-6 text-center rounded-xl space-y-2">
                         <div class="text-2xl">📸</div>
                         <h3 class="font-bold">Instagram</h3>
@@ -362,7 +356,7 @@
                 <div>© 2025 Giallo Indumentaria. Mataderos, Buenos Aires.</div>
                 <div class="flex gap-4">
                     <a href="https://www.instagram.com/gialloindumentaria/?igsh=M3llZjc5bm41NmFt" target="_blank" class="hover:text-cyan-400">Instagram</a>
-                    <a href="https://wa.me/541123456789" target="_blank" class="hover:text-cyan-400">WhatsApp</a>
+                    <a href="mailto:info@giallo.com" class="hover:text-cyan-400">Email</a>
                 </div>
             </div>
         </div>
@@ -616,14 +610,6 @@
             discountPercent = 0;
             alert('✅ Pedido creado: ' + order.id + '\n💰 Total: $' + total);
             switchPage('home');
-        }
-
-        function openWhatsApp() {
-            if (cart.length === 0) return alert('Carrito vacío');
-            const summary = cart.map(item => `${item.name} (x${item.quantity})`).join('\n');
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const msg = `Hola Giallo! 👋\n\nPedido:\n${summary}\n\nTotal: $${subtotal}`;
-            window.open(`https://wa.me/541123456789?text=${encodeURIComponent(msg)}`);
         }
 
         // ===== EDITOR DE DISEÑOS =====
