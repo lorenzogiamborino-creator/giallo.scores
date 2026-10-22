@@ -19,7 +19,6 @@
       --blue:#3b82f6;
       --blue-2:#2563eb;
       --red:#ef4444;
-      --red-soft:#ff6b6b;
       --gold:#facc15;
       --green:#22c55e;
       --shadow:rgba(0,0,0,.55);
@@ -55,7 +54,6 @@
     }
 
     .scroll-area::-webkit-scrollbar { display:none; }
-
     .widget-header {
       background:rgba(0,0,0,0.96);
       border-bottom:1px solid var(--line);
@@ -75,7 +73,6 @@
     }
 
     .brand-wrap { min-width:0; flex:1; }
-
     .brand {
       margin:0;
       font-weight:900;
@@ -87,9 +84,8 @@
     }
 
     .brand .blue { color:var(--blue); }
-
     .clock {
-      margin:5px 0 0 0;
+      margin:5px 0 0;
       font-size:8px;
       color:var(--muted);
       letter-spacing:1px;
@@ -106,15 +102,21 @@
       transition:all .18s ease;
     }
 
-    .ghost-btn {
-      background:#111;
-      color:#fff;
-      padding:10px 12px;
+    .ghost-btn,
+    .primary-btn,
+    .mini-add-btn,
+    .nav-btn {
       border-radius:12px;
       font-size:9px;
       font-weight:900;
       text-transform:uppercase;
       letter-spacing:.8px;
+    }
+
+    .ghost-btn {
+      background:#111;
+      color:#fff;
+      padding:10px 12px;
       border:1px solid #1b1b1b;
     }
 
@@ -122,11 +124,6 @@
       background:var(--blue);
       color:white;
       padding:10px 12px;
-      border-radius:12px;
-      font-size:9px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:.8px;
       border:1px solid rgba(59,130,246,0.7);
     }
 
@@ -136,9 +133,9 @@
       display:flex;
       gap:10px;
       overflow-x:auto;
-      padding-bottom:4px;
       min-height:42px;
       align-items:center;
+      padding-bottom:4px;
     }
 
     .fav-empty {
@@ -158,7 +155,6 @@
       border:1px solid #1b1b1b;
       overflow:hidden;
       flex-shrink:0;
-      position:relative;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -186,7 +182,7 @@
       border:1px solid #111;
       color:#fff;
       border-radius:14px;
-      padding:14px 14px;
+      padding:14px;
       font-size:12px;
       outline:none;
       font-family:inherit;
@@ -272,6 +268,33 @@
       color:#fff;
       border-color:var(--blue);
       box-shadow:0 8px 18px rgba(59,130,246,0.25);
+    }
+
+    .section-tabs {
+      display:flex;
+      gap:8px;
+      padding:10px 20px 0;
+      background:#000;
+    }
+
+    .tab-btn {
+      flex:1;
+      background:#0a0a0a;
+      border:1px solid #111;
+      color:#6b6b6b;
+      border-radius:10px;
+      padding:8px 6px;
+      font-size:8px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      cursor:pointer;
+    }
+
+    .tab-btn.active {
+      background:var(--blue);
+      color:#fff;
+      border-color:var(--blue);
     }
 
     .dashboard {
@@ -458,7 +481,6 @@
     }
 
     .meta-row span:last-child { text-align:right; }
-
     .empty-state {
       text-align:center;
       padding:100px 24px;
@@ -467,6 +489,115 @@
       font-weight:900;
       letter-spacing:1px;
       text-transform:uppercase;
+    }
+
+    .table-wrap,
+    .player-wrap {
+      background:#000;
+      padding:14px 20px 32px;
+    }
+
+    .table-box,
+    .player-box {
+      background:#0a0a0a;
+      border:1px solid #111;
+      border-radius:14px;
+      overflow:hidden;
+    }
+
+    .table-row,
+    .player-row {
+      display:grid;
+      grid-template-columns:34px 1fr 44px 44px 44px 44px;
+      gap:8px;
+      align-items:center;
+      padding:12px 12px;
+      border-bottom:1px solid #121212;
+      font-size:10px;
+      font-weight:900;
+    }
+
+    .table-row.header,
+    .player-row.header {
+      color:#666;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+      font-size:8px;
+      background:#0b0b0b;
+    }
+
+    .team-cell {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      min-width:0;
+    }
+
+    .team-cell img {
+      width:18px;
+      height:18px;
+      object-fit:contain;
+      border-radius:50%;
+      background:#101010;
+      display:block;
+    }
+
+    .player-card {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px;
+      border-bottom:1px solid #121212;
+    }
+
+    .player-name {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex:1;
+    }
+
+    .player-avatar {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      background:linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:900;
+      color:#fff;
+      font-size:11px;
+    }
+
+    .player-meta {
+      min-width:0;
+      flex:1;
+    }
+
+    .player-meta strong {
+      display:block;
+      font-size:11px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .player-meta span {
+      display:block;
+      margin-top:2px;
+      color:#777;
+      font-size:8px;
+      text-transform:uppercase;
+      letter-spacing:0.8px;
+    }
+
+    .player-stat {
+      font-size:10px;
+      font-weight:900;
+      color:#ddd;
     }
 
     .modal-overlay {
@@ -520,7 +651,6 @@
     }
 
     .team-box { width:35%; text-align:center; }
-
     .team-box img {
       width:52px;
       height:52px;
@@ -539,7 +669,6 @@
     }
 
     .result-box { width:30%; text-align:center; }
-
     .big-score {
       margin:0;
       font-size:34px;
@@ -661,9 +790,7 @@
     }
 
     .event-text { flex:1; min-width:0; }
-
     .event-text strong { display:block; font-size:10px; }
-
     .event-text small {
       display:block;
       color:#666;
@@ -672,19 +799,10 @@
       letter-spacing:0.2px;
     }
 
-    .empty-events {
-      color:#555;
-      font-size:10px;
-      font-weight:900;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      text-align:center;
-      padding:18px 0;
-    }
-
     @media (max-width:420px) {
       .widget-header { padding-left:16px; padding-right:16px; }
       .toolbar { padding-left:16px; padding-right:16px; }
+      .section-tabs { padding-left:16px; padding-right:16px; }
       .dashboard { padding-left:16px; padding-right:16px; }
       .match-card { padding-left:16px; padding-right:16px; }
       .league-header { padding-left:16px; padding-right:16px; }
@@ -692,6 +810,7 @@
       .score-block { width:58px; }
       .events-grid { grid-template-columns:1fr; }
       .brand { font-size:20px; }
+      .table-row, .player-row { grid-template-columns:32px 1fr 36px 36px 36px 36px; font-size:9px; }
     }
   </style>
 </head>
@@ -724,6 +843,12 @@
       <button class="btn nav-btn" type="button" data-offset="1">Mañana</button>
     </div>
 
+    <div class="section-tabs">
+      <button class="tab-btn active" data-tab="matches" type="button">Partidos</button>
+      <button class="tab-btn" data-tab="standings" type="button">Tabla</button>
+      <button class="tab-btn" data-tab="players" type="button">Jugadores</button>
+    </div>
+
     <div class="dashboard">
       <div class="kpi-row">
         <div class="kpi-card">
@@ -753,71 +878,93 @@
 
   <script>
     (function () {
-      const DEMO_MATCHES = [
-        {
-          fixture: {
-            id: 101,
-            date: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-            status: { short: 'NS', elapsed: null },
-            timezone: 'America/Argentina/Buenos_Aires'
+      const TEAM_LOGOS = {
+        barcelona: 'https://media-3.api-sports.io/football/teams/529.png',
+        real_madrid: 'https://media-3.api-sports.io/football/teams/530.png',
+        juventus: 'https://media-3.api-sports.io/football/teams/496.png',
+        inter: 'https://media-3.api-sports.io/football/teams/497.png',
+        river: 'https://media-3.api-sports.io/football/teams/121.png',
+        boca: 'https://media-3.api-sports.io/football/teams/123.png',
+        man_united: 'https://media-3.api-sports.io/football/teams/33.png',
+        newcastle: 'https://media-3.api-sports.io/football/teams/34.png',
+        arsenal: 'https://media-3.api-sports.io/football/teams/42.png',
+        chelsea: 'https://media-3.api-sports.io/football/teams/49.png'
+      };
+
+      const serviceData = {
+        teams: [
+          { id: 529, name: 'Barcelona', logo: TEAM_LOGOS.barcelona, league: 'La Liga' },
+          { id: 530, name: 'Real Madrid', logo: TEAM_LOGOS.real_madrid, league: 'La Liga' },
+          { id: 496, name: 'Juventus', logo: TEAM_LOGOS.juventus, league: 'Serie A' },
+          { id: 497, name: 'Inter', logo: TEAM_LOGOS.inter, league: 'Serie A' },
+          { id: 121, name: 'River Plate', logo: TEAM_LOGOS.river, league: 'Liga Profesional' },
+          { id: 123, name: 'Boca Juniors', logo: TEAM_LOGOS.boca, league: 'Liga Profesional' },
+          { id: 33, name: 'Manchester United', logo: TEAM_LOGOS.man_united, league: 'Premier League' },
+          { id: 34, name: 'Newcastle', logo: TEAM_LOGOS.newcastle, league: 'Premier League' },
+          { id: 42, name: 'Arsenal', logo: TEAM_LOGOS.arsenal, league: 'Premier League' },
+          { id: 49, name: 'Chelsea', logo: TEAM_LOGOS.chelsea, league: 'Premier League' }
+        ],
+        standings: [
+          { pos: 1, team: 'Barcelona', played: 12, won: 10, drawn: 1, lost: 1, gf: 28, ga: 8, pts: 31, logo: TEAM_LOGOS.barcelona },
+          { pos: 2, team: 'Real Madrid', played: 12, won: 9, drawn: 2, lost: 1, gf: 26, ga: 11, pts: 29, logo: TEAM_LOGOS.real_madrid },
+          { pos: 3, team: 'Inter', played: 12, won: 8, drawn: 2, lost: 2, gf: 22, ga: 9, pts: 26, logo: TEAM_LOGOS.inter },
+          { pos: 4, team: 'Juventus', played: 12, won: 7, drawn: 3, lost: 2, gf: 19, ga: 12, pts: 24, logo: TEAM_LOGOS.juventus },
+          { pos: 5, team: 'River Plate', played: 12, won: 8, drawn: 1, lost: 3, gf: 21, ga: 10, pts: 25, logo: TEAM_LOGOS.river },
+          { pos: 6, team: 'Boca Juniors', played: 12, won: 7, drawn: 3, lost: 2, gf: 20, ga: 11, pts: 24, logo: TEAM_LOGOS.boca }
+        ],
+        players: [
+          { name: 'Lamine Yamal', team: 'Barcelona', role: 'Delantero', goals: 9, assists: 6, rating: 8.9 },
+          { name: 'Kylian Mbappé', team: 'Real Madrid', role: 'Delantero', goals: 8, assists: 5, rating: 8.8 },
+          { name: 'Marcus Thuram', team: 'Inter', role: 'Delantero', goals: 7, assists: 4, rating: 8.5 },
+          { name: 'Dusan Vlahović', team: 'Juventus', role: 'Delantero', goals: 6, assists: 2, rating: 7.7 },
+          { name: 'Franco Mastantuono', team: 'River Plate', role: 'Mediocentro', goals: 4, assists: 5, rating: 8.1 },
+          { name: 'Miguel Merentiel', team: 'Boca Juniors', role: 'Delantero', goals: 5, assists: 2, rating: 7.9 }
+        ],
+        matches: [
+          {
+            fixture: { id: 101, date: new Date(Date.now() + 60 * 60 * 1000).toISOString(), status: { short: 'NS', elapsed: null } },
+            league: { id: 2, name: 'Premier League', logo: 'https://media-3.api-sports.io/football/leagues/2.png' },
+            teams: { home: { id: 33, name: 'Manchester United', logo: TEAM_LOGOS.man_united }, away: { id: 34, name: 'Newcastle', logo: TEAM_LOGOS.newcastle } },
+            goals: { home: 0, away: 0 },
+            venue: 'Old Trafford'
           },
-          league: { id: 2, name: 'Premier League', logo: 'https://media-3.api-sports.io/football/leagues/2.png' },
-          teams: {
-            home: { id: 33, name: 'Manchester United', logo: 'https://media-3.api-sports.io/football/teams/33.png' },
-            away: { id: 34, name: 'Newcastle', logo: 'https://media-3.api-sports.io/football/teams/34.png' }
+          {
+            fixture: { id: 102, date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), status: { short: 'FT', elapsed: 90 } },
+            league: { id: 11, name: 'La Liga', logo: 'https://media-3.api-sports.io/football/leagues/11.png' },
+            teams: { home: { id: 529, name: 'Barcelona', logo: TEAM_LOGOS.barcelona }, away: { id: 530, name: 'Real Madrid', logo: TEAM_LOGOS.real_madrid } },
+            goals: { home: 2, away: 2 },
+            venue: 'Camp Nou'
           },
-          goals: { home: 0, away: 0 }
-        },
-        {
-          fixture: {
-            id: 102,
-            date: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-            status: { short: 'FT', elapsed: 90 },
-            timezone: 'America/Argentina/Buenos_Aires'
+          {
+            fixture: { id: 103, date: new Date(Date.now() - 30 * 60 * 1000).toISOString(), status: { short: '1H', elapsed: 32 } },
+            league: { id: 39, name: 'Serie A', logo: 'https://media-3.api-sports.io/football/leagues/39.png' },
+            teams: { home: { id: 496, name: 'Juventus', logo: TEAM_LOGOS.juventus }, away: { id: 497, name: 'Inter', logo: TEAM_LOGOS.inter } },
+            goals: { home: 1, away: 0 },
+            venue: 'Allianz Stadium'
           },
-          league: { id: 11, name: 'La Liga', logo: 'https://media-3.api-sports.io/football/leagues/11.png' },
-          teams: {
-            home: { id: 529, name: 'Barcelona', logo: 'https://media-3.api-sports.io/football/teams/529.png' },
-            away: { id: 530, name: 'Real Madrid', logo: 'https://media-3.api-sports.io/football/teams/530.png' }
+          {
+            fixture: { id: 104, date: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(), status: { short: 'NS', elapsed: null } },
+            league: { id: 140, name: 'Liga Profesional', logo: 'https://media-3.api-sports.io/football/leagues/140.png' },
+            teams: { home: { id: 121, name: 'River Plate', logo: TEAM_LOGOS.river }, away: { id: 123, name: 'Boca Juniors', logo: TEAM_LOGOS.boca } },
+            goals: { home: 0, away: 0 },
+            venue: 'Monumental'
           },
-          goals: { home: 2, away: 2 }
-        },
-        {
-          fixture: {
-            id: 103,
-            date: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-            status: { short: '1H', elapsed: 32 },
-            timezone: 'America/Argentina/Buenos_Aires'
-          },
-          league: { id: 39, name: 'Serie A', logo: 'https://media-3.api-sports.io/football/leagues/39.png' },
-          teams: {
-            home: { id: 496, name: 'Juventus', logo: 'https://media-3.api-sports.io/football/teams/496.png' },
-            away: { id: 497, name: 'Inter', logo: 'https://media-3.api-sports.io/football/teams/497.png' }
-          },
-          goals: { home: 1, away: 0 }
-        },
-        {
-          fixture: {
-            id: 104,
-            date: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
-            status: { short: 'NS', elapsed: null },
-            timezone: 'America/Argentina/Buenos_Aires'
-          },
-          league: { id: 140, name: 'Liga Profesional', logo: 'https://media-3.api-sports.io/football/leagues/140.png' },
-          teams: {
-            home: { id: 123, name: 'River Plate', logo: 'https://media-3.api-sports.io/football/teams/123.png' },
-            away: { id: 124, name: 'Boca Juniors', logo: 'https://media-3.api-sports.io/football/teams/124.png' }
-          },
-          goals: { home: 0, away: 0 }
-        }
-      ];
+          {
+            fixture: { id: 105, date: new Date(Date.now() + 2 * 60 * 60 * 1000).toISOString(), status: { short: 'NS', elapsed: null } },
+            league: { id: 2, name: 'Premier League', logo: 'https://media-3.api-sports.io/football/leagues/2.png' },
+            teams: { home: { id: 42, name: 'Arsenal', logo: TEAM_LOGOS.arsenal }, away: { id: 49, name: 'Chelsea', logo: TEAM_LOGOS.chelsea } },
+            goals: { home: 0, away: 0 },
+            venue: 'Emirates Stadium'
+          }
+        ]
+      };
 
       const state = {
         currentOffset: 0,
         favorites: loadFavorites(),
         favoritesOnly: false,
         pendingSearch: null,
-        lastLoadedDate: null
+        currentTab: 'matches'
       };
 
       const LEAGUE_PRIORITY = {
@@ -843,7 +990,7 @@
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
+          .replace(/\"/g, '&quot;')
           .replace(/'/g, '&#039;');
       }
 
@@ -879,17 +1026,33 @@
             status: match.fixture?.status || { short: 'NS', elapsed: null },
             date: match.fixture?.date || new Date().toISOString()
           },
-          goals: match.goals || { home: 0, away: 0 }
+          goals: match.goals || { home: 0, away: 0 },
+          venue: match.venue || 'Estadio no disponible'
         };
       }
 
-      function callApi(path, params = {}) {
-        if (path === 'teams') {
-          return Promise.resolve([]);
+      const apiService = {
+        getMatches(dayOffset = 0) {
+          const base = serviceData.matches.map(normalizeMatch);
+          return base.filter((match) => {
+            const diff = Math.floor((new Date(match.fixture.date) - new Date()) / 86400000);
+            return diff === dayOffset || (dayOffset === 0 && diff >= -1 && diff <= 1);
+          });
+        },
+        getStandings() {
+          return serviceData.standings;
+        },
+        getPlayers() {
+          return serviceData.players;
+        },
+        searchTeams(query) {
+          const q = String(query || '').trim().toLowerCase();
+          if (!q) return [];
+          return serviceData.teams
+            .filter(team => team.name.toLowerCase().includes(q))
+            .map(team => ({ team }));
         }
-
-        return Promise.resolve(DEMO_MATCHES.map(normalizeMatch));
-      }
+      };
 
       function toggleSearchUI() {
         const box = document.getElementById('search-box');
@@ -920,7 +1083,7 @@
           btn.innerHTML = `<img src="${team.logo}" alt="${escapeHtml(team.name)}" />`;
           btn.addEventListener('click', () => {
             state.favoritesOnly = true;
-            updateGiallo(state.currentOffset);
+            renderCurrentView();
           });
           container.appendChild(btn);
         });
@@ -939,7 +1102,7 @@
 
         saveFavorites();
         renderFavBar();
-        updateGiallo(state.currentOffset);
+        renderCurrentView();
       }
 
       function renderSearchResults(data) {
@@ -981,16 +1144,16 @@
         }
 
         clearTimeout(state.pendingSearch);
-        state.pendingSearch = setTimeout(async () => {
-          const data = await callApi('teams', { search: query });
+        state.pendingSearch = setTimeout(() => {
+          const data = apiService.searchTeams(query);
           renderSearchResults(data);
-        }, 350);
+        }, 250);
       }
 
       function getStatusInfo(match) {
         const status = match.fixture?.status?.short || 'NS';
-        const isLive = ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'LIVE'].includes(status);
-        const isFT = ['FT', 'AET', 'PEN', 'CANC', 'ABD', 'AWD'].includes(status);
+        const isLive = ['1H','2H','HT','ET','BT','P','LIVE'].includes(status);
+        const isFT = ['FT','AET','PEN','CANC','ABD','AWD'].includes(status);
         const isNS = status === 'NS';
 
         let labelClass = 'status-next';
@@ -1020,9 +1183,10 @@
       function renderKpis(matches) {
         const live = matches.filter(match => ['1H', '2H', 'HT', 'ET', 'BT', 'P', 'LIVE'].includes(match.fixture?.status?.short || '')).length;
         const finished = matches.filter(match => ['FT', 'AET', 'PEN', 'CANC', 'ABD', 'AWD'].includes(match.fixture?.status?.short || '')).length;
-        document.getElementById('kpi-live').textContent = live;
-        document.getElementById('kpi-final').textContent = finished;
-        document.getElementById('kpi-favorites').textContent = state.favorites.length;
+
+        document.getElementById('kpi-live').textContent = String(live);
+        document.getElementById('kpi-final').textContent = String(finished);
+        document.getElementById('kpi-favorites').textContent = String(state.favorites.length);
       }
 
       function sortMatches(matches) {
@@ -1031,21 +1195,29 @@
           const bLeague = LEAGUE_PRIORITY[b.league?.id] || 0;
           const aDate = new Date(a.fixture?.date || 0).getTime();
           const bDate = new Date(b.fixture?.date || 0).getTime();
-
           if (bLeague !== aLeague) return bLeague - aLeague;
           return aDate - bDate;
         });
+      }
+
+      function filterMatches(matches) {
+        let filtered = matches;
+        if (state.favoritesOnly && state.favorites.length) {
+          const favIds = new Set(state.favorites.map(f => Number(f.id)));
+          filtered = filtered.filter(match => {
+            const homeId = Number(match.teams?.home?.id || 0);
+            const awayId = Number(match.teams?.away?.id || 0);
+            return favIds.has(homeId) || favIds.has(awayId);
+          });
+        }
+        return sortMatches(filtered.filter(Boolean));
       }
 
       function buildMatchCard(match) {
         const { labelClass, labelText } = getStatusInfo(match);
         const home = match.teams.home;
         const away = match.teams.away;
-        const scoreText = (
-          typeof match.goals?.home === 'number' && typeof match.goals?.away === 'number'
-            ? `${match.goals.home} - ${match.goals.away}`
-            : 'vs'
-        );
+        const scoreText = (typeof match.goals?.home === 'number' && typeof match.goals?.away === 'number') ? `${match.goals.home} - ${match.goals.away}` : 'vs';
 
         const card = document.createElement('article');
         card.className = 'match-card';
@@ -1073,7 +1245,7 @@
         return card;
       }
 
-      function renderFeed(matches) {
+      function renderMatchesFeed(matches) {
         const feed = document.getElementById('giallo-feed');
         feed.innerHTML = '';
 
@@ -1085,9 +1257,7 @@
 
         const grouped = Object.values(matches.reduce((acc, match) => {
           const leagueName = match.league?.name || 'Competición';
-          if (!acc[leagueName]) {
-            acc[leagueName] = { league: match.league, matches: [] };
-          }
+          if (!acc[leagueName]) acc[leagueName] = { league: match.league, matches: [] };
           acc[leagueName].matches.push(match);
           return acc;
         }, {}));
@@ -1101,18 +1271,86 @@
           `;
           feed.appendChild(header);
 
-          leagueMatches.forEach((match) => {
-            feed.appendChild(buildMatchCard(match));
-          });
+          leagueMatches.forEach(match => feed.appendChild(buildMatchCard(match)));
         });
 
         renderKpis(matches);
       }
 
+      function renderStandings() {
+        const feed = document.getElementById('giallo-feed');
+        const rows = apiService.getStandings();
+
+        feed.innerHTML = `
+          <div class="table-wrap">
+            <div class="table-box">
+              <div class="table-row header">
+                <div>#</div>
+                <div>Equipo</div>
+                <div>PJ</div>
+                <div>G</div>
+                <div>E</div>
+                <div>Pts</div>
+              </div>
+              ${rows.map(team => `
+                <div class="table-row">
+                  <div>${team.pos}</div>
+                  <div class="team-cell"><img src="${team.logo}" alt="${escapeHtml(team.team)}" /><span>${escapeHtml(team.team)}</span></div>
+                  <div>${team.played}</div>
+                  <div>${team.won}</div>
+                  <div>${team.drawn}</div>
+                  <div>${team.pts}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderPlayers() {
+        const feed = document.getElementById('giallo-feed');
+        const players = apiService.getPlayers();
+
+        feed.innerHTML = `
+          <div class="player-wrap">
+            <div class="player-box">
+              ${players.map(player => `
+                <div class="player-card">
+                  <div class="player-name">
+                    <div class="player-avatar">${player.name.split(' ').map(s => s[0]).slice(0,2).join('').toUpperCase()}</div>
+                    <div class="player-meta">
+                      <strong>${escapeHtml(player.name)}</strong>
+                      <span>${escapeHtml(player.team)} • ${escapeHtml(player.role)}</span>
+                    </div>
+                  </div>
+                  <div class="player-stat">G ${player.goals}</div>
+                  <div class="player-stat">A ${player.assists}</div>
+                  <div class="player-stat">${player.rating}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function renderCurrentView() {
+        const matches = filterMatches(apiService.getMatches(state.currentOffset));
+        if (state.currentTab === 'matches') {
+          renderMatchesFeed(matches);
+          return;
+        }
+
+        if (state.currentTab === 'standings') {
+          renderStandings();
+          return;
+        }
+
+        renderPlayers();
+      }
+
       function openModal(match) {
         const modal = document.getElementById('giallo-modal');
         const body = document.getElementById('modal-body');
-
         const home = match.teams.home;
         const away = match.teams.away;
         const status = getStatusInfo(match);
@@ -1141,7 +1379,7 @@
           <div class="meta-box">
             <div class="mini-meta">
               <span class="label">Estadio</span>
-              <span class="value">${escapeHtml(match.fixture?.stadium || 'No disponible')}</span>
+              <span class="value">${escapeHtml(match.venue || 'No disponible')}</span>
             </div>
             <div class="mini-meta">
               <span class="label">Fecha</span>
@@ -1176,28 +1414,6 @@
         modal.style.display = 'block';
       }
 
-      function filterMatches(matches) {
-        let filtered = matches;
-
-        if (state.favoritesOnly && state.favorites.length) {
-          const favIds = new Set(state.favorites.map(f => Number(f.id)));
-          filtered = filtered.filter(match => {
-            const homeId = Number(match.teams?.home?.id || 0);
-            const awayId = Number(match.teams?.away?.id || 0);
-            return favIds.has(homeId) || favIds.has(awayId);
-          });
-        }
-
-        return sortMatches(filtered).filter(Boolean);
-      }
-
-      async function updateGiallo(offset) {
-        const matches = await callApi('fixtures', { offset });
-        const filtered = filterMatches(matches.filter(Boolean));
-        document.getElementById('tn-clock').textContent = formatClock();
-        renderFeed(filtered);
-      }
-
       function setActiveNav(offset) {
         document.querySelectorAll('.nav-btn').forEach((btn) => {
           const isActive = Number(btn.dataset.offset) === offset;
@@ -1209,7 +1425,7 @@
         document.getElementById('favorite-filter-btn').addEventListener('click', () => {
           state.favoritesOnly = !state.favoritesOnly;
           document.getElementById('favorite-filter-btn').classList.toggle('active', state.favoritesOnly);
-          updateGiallo(state.currentOffset);
+          renderCurrentView();
         });
 
         document.querySelectorAll('.nav-btn').forEach((btn) => {
@@ -1218,7 +1434,15 @@
             state.favoritesOnly = false;
             document.getElementById('favorite-filter-btn').classList.remove('active');
             setActiveNav(state.currentOffset);
-            updateGiallo(state.currentOffset);
+            renderCurrentView();
+          });
+        });
+
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.currentTab = btn.dataset.tab;
+            document.querySelectorAll('.tab-btn').forEach(item => item.classList.toggle('active', item === btn));
+            renderCurrentView();
           });
         });
 
@@ -1230,7 +1454,8 @@
         renderFavBar();
         setActiveNav(state.currentOffset);
         document.getElementById('favorite-filter-btn').classList.toggle('active', state.favoritesOnly);
-        updateGiallo(state.currentOffset);
+        renderCurrentView();
+        document.getElementById('tn-clock').textContent = formatClock();
         setInterval(() => {
           document.getElementById('tn-clock').textContent = formatClock();
         }, 60000);
