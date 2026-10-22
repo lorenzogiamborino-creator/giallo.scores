@@ -753,9 +753,6 @@
 
   <script>
     (function () {
-      const KEY = 'sk_live_0080ebe10641fcabe7f86de36e812906c8a33255';
-      const URL = 'https://v3.football.api-sports.io';
-
       const DEMO_MATCHES = [
         {
           fixture: {
@@ -886,39 +883,12 @@
         };
       }
 
-      async function callApi(path, params = {}) {
-        const url = new URL(`${URL}/${path}`);
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== '') url.searchParams.set(key, value);
-        });
-
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 9000);
-
-        try {
-          const response = await fetch(url.toString(), {
-            method: 'GET',
-            mode: 'cors',
-            credentials: 'omit',
-            headers: {
-              'x-rapidapi-key': KEY,
-              'x-rapidapi-host': 'v3.football.api-sports.io'
-            },
-            signal: controller.signal
-          });
-
-          if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-          }
-
-          const payload = await response.json();
-          return Array.isArray(payload?.response) ? payload.response.map(normalizeMatch) : [];
-        } catch (error) {
-          console.warn('Fallo al cargar datos desde la API, usando demo fallback:', error);
-          return DEMO_MATCHES.map(normalizeMatch);
-        } finally {
-          clearTimeout(timeoutId);
+      function callApi(path, params = {}) {
+        if (path === 'teams') {
+          return Promise.resolve([]);
         }
+
+        return Promise.resolve(DEMO_MATCHES.map(normalizeMatch));
       }
 
       function toggleSearchUI() {
@@ -1071,18 +1041,16 @@
         const { labelClass, labelText } = getStatusInfo(match);
         const home = match.teams.home;
         const away = match.teams.away;
-        const statusClass = labelClass === 'status-live' ? 'score-block live' : 'score-block';
-
-        const card = document.createElement('article');
-        card.className = 'match-card';
-        card.dataset.matchId = match.fixture?.id || 0;
-        card.addEventListener('click', () => openModal(match));
-
         const scoreText = (
           typeof match.goals?.home === 'number' && typeof match.goals?.away === 'number'
             ? `${match.goals.home} - ${match.goals.away}`
             : 'vs'
         );
+
+        const card = document.createElement('article');
+        card.className = 'match-card';
+        card.dataset.matchId = match.fixture?.id || 0;
+        card.addEventListener('click', () => openModal(match));
 
         card.innerHTML = `
           <div class="match-row">
@@ -1090,7 +1058,7 @@
               <img src="${home.logo}" alt="${escapeHtml(home.name)}" />
               <span class="team-label">${escapeHtml(home.name)}</span>
             </div>
-            <div class="score-block ${statusClass}">${scoreText}</div>
+            <div class="score-block ${labelClass === 'status-live' ? 'live' : ''}">${scoreText}</div>
             <div class="team-block away">
               <span class="team-label">${escapeHtml(away.name)}</span>
               <img src="${away.logo}" alt="${escapeHtml(away.name)}" />
@@ -1208,17 +1176,6 @@
         modal.style.display = 'block';
       }
 
-      function getMatchesForDate(offset = 0) {
-        const date = getArgDate(offset);
-        const dateKey = formatDateKey(date);
-        state.lastLoadedDate = dateKey;
-        return callApi('fixtures', {
-          date: dateKey,
-          league: '2,11,128,13,130,140,39,61,78,135,94,131',
-          timezone: 'America/Argentina/Buenos_Aires'
-        });
-      }
-
       function filterMatches(matches) {
         let filtered = matches;
 
@@ -1235,14 +1192,10 @@
       }
 
       async function updateGiallo(offset) {
-        const date = getArgDate(offset);
-        const targetDate = formatDateKey(date);
-        const fixtures = await getMatchesForDate(offset);
-        const filtered = filterMatches(fixtures.filter(Boolean));
-
+        const matches = await callApi('fixtures', { offset });
+        const filtered = filterMatches(matches.filter(Boolean));
         document.getElementById('tn-clock').textContent = formatClock();
         renderFeed(filtered);
-        document.title = `Giallo Scores · ${targetDate}`;
       }
 
       function setActiveNav(offset) {
